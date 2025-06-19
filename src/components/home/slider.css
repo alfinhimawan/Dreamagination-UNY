@@ -1,0 +1,12 @@
+.slick-slider {
+  @apply md:px-10;
+}
+.slick-slide {
+  @apply px-2;
+}
+.slick-slide div {
+  @apply aspect-[4/3] h-full w-full overflow-hidden rounded-xl;
+}
+li.slick-active div {
+  @apply bg-blue-950;
+}
