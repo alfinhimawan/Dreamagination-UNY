@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Source_Sans_3, Teko } from "next/font/google";
 import "./globals.css";
-import Footer from "~/components/Footer";
 import clsx from "clsx";
 
 const teko = Teko({ subsets: ["latin"], variable: "--font-teko" });
@@ -32,7 +31,6 @@ export default function RootLayout({
     <html lang="en" className={clsx(sourceSans3.variable, teko.variable)}>
       <body>
         {children}
-        <Footer />
       </body>
     </html>
   );

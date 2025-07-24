@@ -1,4 +1,5 @@
-import Header from "~/components/Header";
+import Header from "~/components/layout/Header";
+import Footer from "~/components/layout/Footer";
 
 export default function SubteamLayout({
   children,
@@ -7,8 +8,9 @@ export default function SubteamLayout({
 }) {
   return (
     <>
-      <Header />
+      <Header variant="general" />
       {children}
+      <Footer />
     </>
   );
 }

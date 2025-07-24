@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Header from "~/components/Header";
 
 function RoleHeading({ children }: { children: React.ReactNode }) {
   return (

@@ -8,6 +8,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: {
+          DEFAULT: '#14213d', // biru tua
+          dark: '#0f1a2b',
+        },
+        accent: {
+          DEFAULT: '#fca311', // kuning emas
+        },
+        neutral: {
+          DEFAULT: '#ffffff', // putih
+        },
+      },
       dropShadow: {
         white: "5px 10px 50px rgba(255, 255, 255, 0.25)",
       },

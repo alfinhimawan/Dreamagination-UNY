@@ -6,8 +6,22 @@
   font-family: var(--font-teko);
 }
 
-body {
+
+body, html {
   font-family: var(--font-sans);
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+* {
+  transition: all 0.2s ease-in-out;
 }
 
 .container {
