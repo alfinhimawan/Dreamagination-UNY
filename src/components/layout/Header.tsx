@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useToggle } from "~/hooks";
 
 const home_menu = [
-  { name: "Home", path: "/" },
+  { name: "Home", path: "#top" },
   { name: "About", path: "#about-section" },
   { name: "Division", path: "#divisions" },
   { name: "Achievement", path: "/achievements" },
@@ -18,10 +18,11 @@ const home_menu = [
 
 const general_menu = [
   { name: "Home", path: "/" },
+  { name: "About", path: "/#about-section" },
   { name: "Division", path: "/subteam" },
-  { name: "Achievement", path: "/achievements" },
-  { name: "Gallery", path: "/gallery" },
-  { name: "Contact", path: "/contact" },
+  { name: "Achievement", path: "/#achievements" },
+  { name: "Gallery", path: "/#gallery" },
+  { name: "Contact", path: "/#contact" },
 ];
 
 interface HeaderProps {
@@ -47,42 +48,47 @@ export default function Header({ variant = "general" }: HeaderProps) {
   }, []);
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
-    // Only handle smooth scroll for anchor links and home variant
     if (variant === "home" && path.startsWith('#')) {
       e.preventDefault();
-      const targetElement = document.querySelector(path);
-      if (targetElement) {
-        const headerHeight = 80; // Approximate header height
-        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-        
-        // Enhanced smooth scroll with easing
-        const startPosition = window.pageYOffset;
-        const distance = targetPosition - startPosition;
-        const duration = 800; // Duration in milliseconds
-        let start: number | null = null;
-
-        const step = (timestamp: number) => {
-          if (!start) start = timestamp;
-          const progress = timestamp - start;
-          const percentage = Math.min(progress / duration, 1);
-          
-          // Easing function for smooth animation
-          const easeInOutCubic = (t: number) => 
-            t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-          
-          const easedPercentage = easeInOutCubic(percentage);
-          window.scrollTo(0, startPosition + distance * easedPercentage);
-          
-          if (progress < duration) {
-            requestAnimationFrame(step);
-          }
-        };
-        
-        requestAnimationFrame(step);
-        
-        // Close mobile menu after click
-        closeMenu();
+      
+      let targetPosition = 0; 
+      
+      if (path === '#top') {
+        targetPosition = 0;
+      } else {
+        const targetElement = document.querySelector(path);
+        if (targetElement) {
+          const headerHeight = 80;
+          targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+        } else {
+          return;
+        }
       }
+      
+      const startPosition = window.pageYOffset;
+      const distance = targetPosition - startPosition;
+      const duration = 800;
+      let start: number | null = null;
+
+      const step = (timestamp: number) => {
+        if (!start) start = timestamp;
+        const progress = timestamp - start;
+        const percentage = Math.min(progress / duration, 1);
+        
+        const easeInOutCubic = (t: number) => 
+          t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+        
+        const easedPercentage = easeInOutCubic(percentage);
+        window.scrollTo(0, startPosition + distance * easedPercentage);
+        
+        if (progress < duration) {
+          requestAnimationFrame(step);
+        }
+      };
+      
+      requestAnimationFrame(step);
+      
+      closeMenu();
     }
   };
 
@@ -90,10 +96,9 @@ export default function Header({ variant = "general" }: HeaderProps) {
     <header
       className={clsx(
         scrolled && "bg-white/30 shadow backdrop-blur-md",
-        !scrolled && "lg:text-white",
         isMenuOpen &&
           "max-lg:bg-white/30 max-lg:text-primary max-lg:backdrop-blur-md max-md:border-b",
-        "fixed left-0 top-0 z-[100] w-full transition-colors duration-300",
+        "fixed left-0 top-0 z-[100] w-full transition-colors duration-300 ease-in-out",
       )}
     >
       <div className="mx-auto flex max-w-screen-xl flex-col justify-between px-4 py-2 lg:flex-row lg:items-center">
@@ -104,8 +109,8 @@ export default function Header({ variant = "general" }: HeaderProps) {
             className="h-16"
           >
             <span className={clsx(
-              "w-10 cursor-pointer transition-colors duration-300",
-              scrolled || isMenuOpen ? "text-black" : "text-white"
+              "w-10 cursor-pointer transition-colors duration-300 ease-in-out",
+              scrolled || isMenuOpen ? "text-black" : variant === "home" ? "text-white" : "text-black"
             )}>
               <Logo />
             </span>
@@ -129,7 +134,10 @@ export default function Header({ variant = "general" }: HeaderProps) {
               href={menuItem.path}
               key={menuItem.name}
               onClick={(e) => handleSmoothScroll(e, menuItem.path)}
-              className="p-4 font-medium hover:text-accent transition-colors duration-300"
+              className={clsx(
+                "p-4 font-medium hover:text-accent transition-colors duration-300 ease-in-out",
+                scrolled || isMenuOpen ? "text-black" : variant === "home" ? "lg:text-white" : "text-black"
+              )}
             >
               {menuItem.name}
             </Link>

@@ -8,7 +8,7 @@ import Logo from "../ui/Logo";
 import ScrollAnimationWrapper from "../ui/ScrollAnimationWrapper";
 
 const footer_menu = [
-  { name: "Home", path: "/" },
+  { name: "Home", path: "#top" },
   { name: "About", path: "#about-section" },
   { name: "Division", path: "#divisions" },
   { name: "Achievement", path: "/achievements" },
@@ -28,38 +28,50 @@ export default function Footer() {
     // Only handle smooth scroll for anchor links
     if (path.startsWith('#')) {
       e.preventDefault();
-      const targetElement = document.querySelector(path);
-      if (targetElement) {
-        const headerHeight = 80; // Approximate header height
-        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-        
-        // Enhanced smooth scroll with easing
-        const startPosition = window.pageYOffset;
-        const distance = targetPosition - startPosition;
-        const duration = 800; // Duration in milliseconds
-        let start: number | null = null;
-
-        const step = (timestamp: number) => {
-          if (!start) start = timestamp;
-          const progress = timestamp - start;
-          const percentage = Math.min(progress / duration, 1);
-          
-          // Easing function for smooth animation
-          const easeInOutCubic = (t: number) => 
-            t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-          
-          const easedPercentage = easeInOutCubic(percentage);
-          window.scrollTo(0, startPosition + distance * easedPercentage);
-          
-          if (progress < duration) {
-            requestAnimationFrame(step);
-          }
-        };
-        
-        requestAnimationFrame(step);
+      
+      let targetPosition = 0; // Default to top
+      
+      // Handle special case for #top (scroll to top)
+      if (path === '#top') {
+        targetPosition = 0;
+      } else {
+        // Handle regular anchor links
+        const targetElement = document.querySelector(path);
+        if (targetElement) {
+          const headerHeight = 80; // Approximate header height
+          targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+        } else {
+          return; // Element not found, exit
+        }
       }
+      
+      // Enhanced smooth scroll with easing
+      const startPosition = window.pageYOffset;
+      const distance = targetPosition - startPosition;
+      const duration = 800; // Duration in milliseconds
+      let start: number | null = null;
+
+      const step = (timestamp: number) => {
+        if (!start) start = timestamp;
+        const progress = timestamp - start;
+        const percentage = Math.min(progress / duration, 1);
+        
+        // Easing function for smooth animation
+        const easeInOutCubic = (t: number) => 
+          t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+        
+        const easedPercentage = easeInOutCubic(percentage);
+        window.scrollTo(0, startPosition + distance * easedPercentage);
+        
+        if (progress < duration) {
+          requestAnimationFrame(step);
+        }
+      };
+      
+      requestAnimationFrame(step);
     }
   };
+
   return (
     <footer className="bg-primary text-white">
       <div className="mx-auto max-w-7xl px-4 py-12">
