@@ -28,6 +28,32 @@ body, html {
   scroll-padding-top: 80px;
 }
 
+/* Hide header when modal is open */
+body.modal-open header {
+  display: none !important;
+}
+
+/* Hide scroll-to-top button when modal is open */
+body.modal-open .fixed.bottom-8.right-8.z-50 {
+  display: none !important;
+}
+
+/* Modal animations */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
@@ -64,12 +90,13 @@ body, html {
 
 .heading-line::after {
   content: "";
-  bottom: -0.75rem;
-  left: 12.5%;
+  bottom: -1rem;
+  left: 20%;
   position: absolute;
-  width: 75%;
-  height: 0.3rem;
-  background: rgb(234, 179, 8);
+  width: 60%;
+  height: 0.25rem;
+  background: linear-gradient(90deg, transparent, #fca311, #fca311, transparent);
+  border-radius: 2px;
 }
 
 .bg-robot {

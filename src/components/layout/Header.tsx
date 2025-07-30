@@ -11,7 +11,7 @@ const home_menu = [
   { name: "Home", path: "#top" },
   { name: "About", path: "#about-section" },
   { name: "Division", path: "#divisions" },
-  { name: "Achievement", path: "/achievements" },
+  { name: "Achievement", path: "#achievements" },
   { name: "Gallery", path: "#gallery" },
   { name: "Contact", path: "#contact" },
 ];
